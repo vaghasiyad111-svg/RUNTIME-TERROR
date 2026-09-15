@@ -22,8 +22,11 @@ export async function GET(
   try {
     if (db) {
       const docRef = doc(db, 'credit_assessments', id)
-      const docSnap = await getDoc(docRef)
-      if (docSnap.exists()) {
+      const docSnap = await Promise.race([
+        getDoc(docRef),
+        new Promise<null>((resolve) => setTimeout(() => resolve(null), 2500))
+      ])
+      if (docSnap && docSnap.exists()) {
         const data = docSnap.data()
         return NextResponse.json({
           assessment_id: id,

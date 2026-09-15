@@ -34,10 +34,10 @@ export async function POST(request: NextRequest) {
     // Generate a stable assessment ID
     const assessment_id = `asmt_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`
 
-    // Store in Firebase Firestore
+    // Store in Firebase Firestore (non-blocking fire-and-forget so it never hangs the API response)
     try {
       if (db) {
-        await setDoc(doc(db, 'credit_assessments', assessment_id), {
+        setDoc(doc(db, 'credit_assessments', assessment_id), {
           assessment_id,
           score,
           risk_band,
@@ -47,10 +47,12 @@ export async function POST(request: NextRequest) {
           key_negative_factors: negative,
           input,
           created_at: new Date().toISOString(),
+        }).catch((dbErr) => {
+          console.warn('[Firebase Firestore] Background save error:', dbErr)
         })
       }
     } catch (dbErr) {
-      console.warn('[Firebase Firestore] Could not save assessment:', dbErr)
+      console.warn('[Firebase Firestore] Could not initiate assessment save:', dbErr)
     }
 
     const response: AssessmentResponse = {

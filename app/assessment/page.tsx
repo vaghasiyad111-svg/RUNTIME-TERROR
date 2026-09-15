@@ -8,6 +8,11 @@ import {
   Loader2, CheckCircle2, Info,
 } from 'lucide-react'
 import type { AssessmentInput } from '@/lib/types'
+import {
+  computeMockScore,
+  getFactorLabels,
+  computeMockExplanations,
+} from '@/lib/mock/engine'
 
 // ─── Form Sections ──────────────────────────────────────────
 const SECTIONS = [
@@ -202,18 +207,45 @@ export default function AssessmentPage() {
     setSubmitError('')
 
     try {
-      const res = await fetch('/api/assessment', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
-      })
+      let data: any = null
 
-      if (!res.ok) {
-        const err = await res.json()
-        throw new Error(err.error || 'Assessment failed')
+      // Attempt server-side API assessment with a strict 3.5s timeout
+      try {
+        const controller = new AbortController()
+        const timerId = setTimeout(() => controller.abort(), 3500)
+
+        const res = await fetch('/api/assessment', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(form),
+          signal: controller.signal,
+        })
+        clearTimeout(timerId)
+
+        if (res.ok) {
+          data = await res.json()
+        }
+      } catch (networkOrTimeoutErr) {
+        console.warn('API route call failed or timed out, applying instant fallback scoring:', networkOrTimeoutErr)
       }
 
-      const data = await res.json()
+      // Robust fallback: if API route failed or timed out, calculate score immediately in-browser
+      if (!data || !data.score) {
+        const { score, risk_band, confidence } = computeMockScore(form)
+        const { positive, negative } = getFactorLabels(form)
+        const assessment_id = `asmt_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`
+        data = {
+          assessment_id,
+          score,
+          risk_band,
+          confidence,
+          model_version: 'demo-v0',
+          key_positive_factors: positive,
+          key_negative_factors: negative,
+          _explanations: computeMockExplanations(form, score),
+          _input: form,
+        }
+      }
 
       // Store result in sessionStorage for dashboard
       sessionStorage.setItem('scorify_result', JSON.stringify(data))
