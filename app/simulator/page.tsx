@@ -132,7 +132,7 @@ function SimulatorContent() {
         <div className="mb-6 flex items-center gap-2.5 p-3 rounded-lg bg-blue-500/8 border border-blue-500/20">
           <Zap size={14} className="text-blue-400 shrink-0" />
           <p className="text-xs text-blue-300/80">
-            <strong>Key differentiator:</strong> SCORIFY doesn't just tell you your score — it shows you
+            <strong>Key differentiator:</strong> SCORIFY doesn&apos;t just tell you your score — it shows you
             how to improve it. In Phase 2, this simulator will use ML-based counterfactual analysis.
           </p>
         </div>

@@ -10,7 +10,7 @@ export default function NotFound() {
         </div>
         <h1 className="text-4xl font-bold text-white mb-3">404</h1>
         <p className="text-white/50 text-base mb-8">
-          This page doesn't exist. Return to SCORIFY.
+          This page doesn&apos;t exist. Return to SCORIFY.
         </p>
         <Link href="/" className="btn-primary">
           <ArrowLeft size={16} />

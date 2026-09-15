@@ -440,7 +440,7 @@ export default function AssessmentPage() {
                 <Info size={16} className="text-blue-400 shrink-0 mt-0.5" />
                 <p className="text-xs text-blue-300/80">
                   These alternate signals help SCORIFY assess creditworthiness for gig workers and those
-                  with non-traditional income. If a field doesn't apply, select the middle option (5).
+                  with non-traditional income. If a field doesn&apos;t apply, select the middle option (5).
                 </p>
               </div>
 

@@ -57,7 +57,7 @@ export default function Home() {
             AI-powered alternate credit intelligence for people beyond traditional credit history.
           </p>
           <p className="text-sm text-white/35 max-w-xl mx-auto mb-12 italic">
-            "No Credit History ≠ No Creditworthiness."
+            &ldquo;No Credit History &ne; No Creditworthiness.&rdquo;
           </p>
 
           {/* CTAs */}
@@ -98,7 +98,7 @@ export default function Home() {
               <p className="text-white/55 text-base leading-relaxed mb-6">
                 Over 190 million adults in India lack formal credit history. Traditional CIBIL scores
                 rely on past credit behaviour — but what about gig workers, first-time borrowers,
-                and people who've never had a credit card?
+                and people who&apos;ve never had a credit card?
               </p>
               <p className="text-white/55 text-base leading-relaxed">
                 Their financial behaviour is real. Their creditworthiness exists. The data just
@@ -242,7 +242,7 @@ export default function Home() {
               Score. Explain. Improve.
             </h2>
             <p className="text-white/50 text-base max-w-xl mx-auto">
-              "Your score. Your reasons. Your next move."
+              &ldquo;Your score. Your reasons. Your next move.&rdquo;
             </p>
           </div>
 
