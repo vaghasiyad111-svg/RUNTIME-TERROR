@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { z } from 'zod'
 import { assessmentSchema } from '@/lib/validation/schemas'
 import {
   computeMockScore,
@@ -7,6 +6,8 @@ import {
   getFactorLabels,
 } from '@/lib/mock/engine'
 import type { AssessmentResponse } from '@/lib/types'
+import { db } from '@/lib/db/firebase'
+import { doc, setDoc } from 'firebase/firestore'
 
 export async function POST(request: NextRequest) {
   try {
@@ -26,22 +27,31 @@ export async function POST(request: NextRequest) {
 
     const input = parsed.data
 
-    // ── Mock Prediction ───────────────────────────────────────
-    // In Phase 2: replace this block with a call to FastAPI:
-    //   const mlResponse = await fetch(`${process.env.ML_SERVICE_URL}/predict`, {
-    //     method: 'POST',
-    //     body: JSON.stringify(input),
-    //   })
-    // ─────────────────────────────────────────────────────────
+    // ── Prediction & Scoring ─────────────────────────────────
     const { score, risk_band, confidence } = computeMockScore(input)
     const { positive, negative } = getFactorLabels(input)
 
-    // Generate a stable assessment ID (no DB in mock mode)
+    // Generate a stable assessment ID
     const assessment_id = `asmt_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`
 
-    // Store in Supabase if configured (graceful degradation)
-    // const db = createServerClient()
-    // if (db) { await db.from('credit_assessments').insert({ ... }) }
+    // Store in Firebase Firestore
+    try {
+      if (db) {
+        await setDoc(doc(db, 'credit_assessments', assessment_id), {
+          assessment_id,
+          score,
+          risk_band,
+          confidence,
+          model_version: 'demo-v0',
+          key_positive_factors: positive,
+          key_negative_factors: negative,
+          input,
+          created_at: new Date().toISOString(),
+        })
+      }
+    } catch (dbErr) {
+      console.warn('[Firebase Firestore] Could not save assessment:', dbErr)
+    }
 
     const response: AssessmentResponse = {
       assessment_id,
@@ -53,11 +63,9 @@ export async function POST(request: NextRequest) {
       key_negative_factors: negative,
     }
 
-    // Store assessment in session via header (client stores in URL params)
     return NextResponse.json(
       {
         ...response,
-        // Embed computed explanations for immediate use on dashboard
         _explanations: computeMockExplanations(input, score),
         _input: input,
       },
