@@ -11,7 +11,6 @@ export async function GET(
   const demo = DEMO_USERS.find((u) => u.id === id)
   if (demo) {
     return NextResponse.json({
-      assessment_id: demo.id,
       ...demo.result,
       input: demo.input,
     })
