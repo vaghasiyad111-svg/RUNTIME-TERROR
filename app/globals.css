@@ -1,0 +1,247 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── CSS Custom Properties ────────────────────────────── */
+:root {
+  --navy-950: #080d1a;
+  --navy-900: #0d1240;
+  --navy-800: #111b4d;
+  --navy-700: #1a2878;
+  --accent-blue: #4f70e8;
+  --accent-blue-light: #6472f3;
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --border: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.15);
+  --surface: rgba(255, 255, 255, 0.04);
+  --surface-hover: rgba(255, 255, 255, 0.07);
+}
+
+/* ─── Base ─────────────────────────────────────────────── */
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background-color: var(--navy-950);
+  color: var(--text-primary);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+/* ─── Typography ───────────────────────────────────────── */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+}
+
+/* ─── Selection ────────────────────────────────────────── */
+::selection {
+  background: rgba(79, 112, 232, 0.35);
+  color: #fff;
+}
+
+/* ─── Scrollbar ─────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* ─── Component Layer ──────────────────────────────────── */
+@layer components {
+
+  /* Surface cards */
+  .card {
+    @apply rounded-xl border bg-white/[0.04] border-white/[0.08];
+    backdrop-filter: blur(4px);
+  }
+
+  .card-hover {
+    @apply card transition-all duration-200 hover:bg-white/[0.07] hover:border-white/[0.14];
+  }
+
+  /* Buttons */
+  .btn-primary {
+    @apply inline-flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-lg transition-all duration-200 text-sm;
+    box-shadow: 0 0 0 0 rgba(79, 112, 232, 0);
+  }
+  .btn-primary:hover {
+    box-shadow: 0 0 20px rgba(79, 112, 232, 0.3);
+  }
+  .btn-primary:active {
+    @apply scale-[0.98];
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center gap-2 px-6 py-3 border border-white/20 hover:border-white/40 text-white/80 hover:text-white font-semibold rounded-lg transition-all duration-200 text-sm bg-white/[0.04] hover:bg-white/[0.08];
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center gap-2 px-4 py-2 text-white/60 hover:text-white font-medium rounded-lg transition-all duration-200 text-sm hover:bg-white/[0.06];
+  }
+
+  /* Form elements */
+  .input-field {
+    @apply w-full px-4 py-3 bg-white/[0.05] border border-white/10 rounded-lg text-white placeholder-white/30 focus:outline-none focus:border-blue-500/60 focus:bg-white/[0.07] transition-all duration-200 text-sm;
+  }
+
+  .input-label {
+    @apply block text-sm font-medium text-white/70 mb-1.5;
+  }
+
+  .input-helper {
+    @apply text-xs text-white/40 mt-1;
+  }
+
+  .input-error {
+    @apply text-xs text-red-400 mt-1;
+  }
+
+  /* Section headings */
+  .section-label {
+    @apply text-xs font-semibold tracking-widest text-blue-400/80 uppercase;
+  }
+
+  /* Contribution bar */
+  .contrib-bar-positive {
+    @apply h-full rounded-full bg-emerald-400;
+  }
+
+  .contrib-bar-negative {
+    @apply h-full rounded-full bg-red-400;
+  }
+
+  /* Score ring */
+  .score-ring {
+    transform: rotate(-90deg);
+    transform-origin: 50% 50%;
+  }
+
+  /* Navigation */
+  .nav-link {
+    @apply text-sm text-white/60 hover:text-white transition-colors duration-200;
+  }
+
+  /* Badge */
+  .badge {
+    @apply inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold border;
+  }
+
+  /* Progress step */
+  .step-active {
+    @apply w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white text-sm font-bold;
+  }
+
+  .step-done {
+    @apply w-8 h-8 rounded-full bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400 text-sm font-bold;
+  }
+
+  .step-pending {
+    @apply w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white/30 text-sm font-bold;
+  }
+
+  /* Gradient text */
+  .gradient-text {
+    @apply bg-gradient-to-r from-blue-400 to-violet-400 bg-clip-text text-transparent;
+  }
+
+  /* Divider */
+  .divider {
+    @apply border-t border-white/[0.07];
+  }
+}
+
+/* ─── Utility Layer ────────────────────────────────────── */
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+  }
+
+  .animate-slide-up {
+    animation: slideUp 0.4s ease-out;
+  }
+}
+
+/* ─── Keyframes ─────────────────────────────────────────── */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── Recharts overrides ─────────────────────────────────── */
+.recharts-tooltip-wrapper .recharts-default-tooltip {
+  background: #111b4d !important;
+  border: 1px solid rgba(255,255,255,0.1) !important;
+  border-radius: 8px !important;
+  color: #f1f5f9 !important;
+}
+
+/* ─── Range slider ───────────────────────────────────────── */
+input[type='range'] {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;
+  background: rgba(255,255,255,0.12);
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+}
+
+input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #4f70e8;
+  border: 2px solid #fff;
+  box-shadow: 0 0 8px rgba(79, 112, 232, 0.4);
+  cursor: pointer;
+  transition: box-shadow 0.2s;
+}
+
+input[type='range']::-webkit-slider-thumb:hover {
+  box-shadow: 0 0 14px rgba(79, 112, 232, 0.7);
+}
+
+input[type='range']::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #4f70e8;
+  border: 2px solid #fff;
+  cursor: pointer;
+}
